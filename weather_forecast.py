@@ -7,20 +7,28 @@ def kel_to_cel(kel):
 
 def get_weather(api_key, lat, lon):
     """
-    Given the latitude and longitude, return the current weather.
+    Given the latitude and longitude, print the current weather.
     """
     excludes = "alerts,daily,hourly,minutely"
     api_url = f"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={excludes}&appid={api_key}"
     response = requests.get(api_url)
 
+    # Extract relevant weather info
     weather_info = response.json()["current"]
     current_temp = kel_to_cel(weather_info["temp"])
-    print(f"The current temperature is {current_temp}")
+    feels_like = kel_to_cel(weather_info["feels_like"])
+    main_weather = weather_info["weather"][0]["main"]
+
+    # Print out the information
+    print(f"The current temperature is {current_temp} degress Celcius")
+    print(f"It feels like {feels_like} degress Celcius")
+    print(f"The area is experiencing mainly {main_weather}")
 
 def get_coordinates(api_key, city, state, country_code):
     """
     Given the city, state/region, and country code, find the coordinates.
     """
+    # Set up the API call
     api_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city},{state},{country_code}&appid={api_key}"
     response = requests.get(api_url)
     city_obj = response.json()[0]
