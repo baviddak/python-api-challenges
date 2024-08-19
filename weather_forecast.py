@@ -61,4 +61,5 @@ def main():
         lat, lon = get_coordinates(api_key, location["city"], location["state"], location["country"])
         get_weather(api_key, lat, lon)
 
-main()
+if __name__ == '__main__':
+    main()
