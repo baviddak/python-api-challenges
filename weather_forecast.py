@@ -1,3 +1,5 @@
+# A token from https://openweathermap.org/api is needed to run this
+
 import requests
 import os
 import argparse
