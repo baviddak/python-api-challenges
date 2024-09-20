@@ -5,7 +5,16 @@ class CurrencyConverter:
 
     def __init__(self, api_key):
         self.conversion_rate_cache = {}
+        self.available_currencies = None
         self.api_key = api_key
+
+    def get_currencies(self):
+        if not self.available_currencies:
+            r = requests.get(f"{CurrencyConverter.currency_api_url}/{self.api_key}/latest/CAD")
+            data = r.json()
+            self.available_currencies = data["conversion_rates"].keys()
+
+        return self.available_currencies
 
     def set_source(self, source_currency):
         self.source = source_currency
@@ -38,8 +47,11 @@ def main():
     # new currency converter
     my_currency_converter = CurrencyConverter(api_key)
 
+    # print available currencies
+    print(my_currency_converter.get_currencies())
+
     # set source and target currency and get the amount
-    my_currency_converter.set_source("AUD")
+    my_currency_converter.set_source("ETB")
     my_currency_converter.set_target("CAD")
     my_currency_converter.get_rate()
     print(f"The new number is {my_currency_converter.convert(4)}")
